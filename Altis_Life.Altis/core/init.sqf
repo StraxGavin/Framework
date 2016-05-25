@@ -45,6 +45,9 @@ switch (playerSide) do {
     case independent: {
         life_paycheck = LIFE_SETTINGS(getNumber,"paycheck_med");
     };
+    case east: {
+        life_paycheck = LIFE_SETTINGS(getNumber,"paycheck_adac");
+    };
 };
 
 diag_log "::Life Client:: Variables initialized";
@@ -95,6 +98,11 @@ switch (playerSide) do {
         //Initialize Medics and blah
         _handle = [] spawn life_fnc_initMedic;
         waitUntil {scriptDone _handle};
+    };
+    case east: {
+        //Initialize ADAC and blah
+        _handle = [] spawn life_fnc_initAdac
+        waitUntil {ScriptDone _handle};
     };
 };
 
