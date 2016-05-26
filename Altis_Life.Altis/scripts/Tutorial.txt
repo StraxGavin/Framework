@@ -1,0 +1,121 @@
+Hello Fellow Altisians, 
+
+ I thought I would do a small tutorial on how to add a status bar to your server. 
+
+ Location of changes: mpmissions \ Altis_Life.Altis 
+
+ Difficulty: Copy and Paste 
+
+ Uses and Features: 
+•  Displays FPS 
+•  Number of Cops 
+•  Number of Civilians 
+•  Number of Medics 
+•  Amount of Money in bank and on the person 
+•  Grid ref 
+•  Can Also be used to display server uptime and other useful information 
+•  customizable 
+
+ Author: Osef 
+
+ Conversion to Altis Life: Midgetgrimm 
+
+ Changes and improvements: Paronity and Breau 
+
+______________________________________________________________________________________________________________________________________ 
+1.  Create a folder in your root directory called scripts 
+2.  Create a file called fn_statusBar.sqf and paste inside the following:  waituntil {(isNull (findDisplay 46))!};
+ disableSerialization;
+ / *
+	 File: fn_statusBar.sqf
+	 Author: Some French Guy named Osef I presumed Given the varying on the status bar
+	 Edited by: [midgetgrimm]
+	 Description: Puts a small bar in the bottom right of screen to display in-game information
+
+ * /
+ 4 cutRsc [ "osefStatusBar", "PLAIN"];
+ systemChat format [ "[GL v3.1.4] Loading game server info ..." _rscLayer];
+
+ [] Spawn {
+	 sleep 5;
+	 _counter = 180;
+	 _timeSinceLastUpdate = 0;
+	 while {true} do
+	 {
+		 sleep 1;
+		 _counter _counter = - 1;
+		 ((UiNamespace getVariable "osefStatusBar") displayCtrl 1000) ctrlSetText format [ "| FPS:% 1 | Police:% 2 | Civilians:% 3 | Medics:% 4 | CASH:% 5 | BANK:% 6 | GRIDREF:% 7 | "diag_fps round, west countSide playableUnits, civilian countSide playableUnits, independent countSide playableUnits [life_cash] call life_fnc_numberText [life_atmbank] call life_fnc_numberText, mapGridPosition player, _counter];
+	 };
+ }; 
+
+
+3.  Open your root directory again and find init.sqf and paste in the following:  [] ExecVM "scripts \ fn_statusBar.sqf"; 
+
+
+4.  It Should look something like this:  life_versionInfo =    "Altis Life RPG v4.0"; 
+  [] ExecVM "briefing.sqf";    // Load Briefing 
+  [] ExecVM "KRON_Strings.sqf"; 
+  [] ExecVM "scripts \ fn_statusBar.sqf"; 
+
+
+
+5.  Go to root \ dialog and create a file called statusBar.hpp then a paste in the following: 
+ 0x01 #define ST_RIGHT 
+
+  osefStatusBar class { 
+	  idd =    - 1; 
+	  onLoad =    "uiNamespace setVariable [ 'osefStatusBar' _this select 0]"; 
+	  onUnload =    "uiNamespace setVariable [ 'osefStatusBar' objNull]"; 
+	  OnDestroy =    "uiNamespace setVariable [ 'osefStatusBar' objNull]"; 
+	  fadein =    0; 
+	  fadeout =    0; 
+	  duration =    10E10; 
+	  movingEnable =    0; 
+	  controlsBackground []    =    {}; 
+	  objects []    =    {}; 
+	  class controls { 
+		  StatusBarText class { 
+			  idc =    1000; 
+			  x = safezoneX + safezoneW -    1; 
+			  y = safezoneY + safezoneH -    0.08; 
+			  w =    1; 
+			  h =    0.04; 
+			  shadow =    2; 
+			  colorBackground []    =    {    1    0.3,    0,    0.0    };     // Uncomment and 4th Increase number To have a background 
+			  font =    "PuristaSemibold"; 
+			  size =    0.03; 
+			  type =    13; 
+			  style =    1; 
+			  text = "Loading server info ..."; 
+			  class    Attributes    { 
+				  align = "right"; 
+				  color =    "#FFFFF"; 
+			  }; 
+		  }; 
+	  }; 
+  }; 
+
+
+
+6.  Go to your root directory and find description.ext and under 
+	  #include    "dialog \ hud_nameTags.h" 
+
+ Paste 
+	  #include    "dialog \ statusBar.hpp" 
+
+ So now it Should look like this 
+ class    RscTitles 
+  { 
+	  #include    "dialog \ ui.hpp" 
+	  #include    "dialog \ progress.hpp" 
+	  #include    "dialog \ hud_nameTags.h" 
+	  #include    "dialog \ statusBar.hpp" 
+  }; 
+
+
+
+7.  You can now change your status bar to suit your needs.  To Change the color of the bar change line 30 of statusBar.hpp 
+ color =    "#FFFFF"; 
+
+ You may use a website : such as http://www.color-hex.com inorder to find the color you desire. 
+
