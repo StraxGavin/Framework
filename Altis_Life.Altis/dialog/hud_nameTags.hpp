@@ -18,7 +18,7 @@ class Life_HUD_nameTags {
             colorBackground[] = {0,0,0,0};
             font = "PuristaMedium";
             text = "";
-            size = 0.04;
+            size = 0.06;
             shadow = 1.5;
             w = 0; h = 0;
             x = 0.1; y = 0.1;
